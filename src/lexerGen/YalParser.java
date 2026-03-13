@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 
 public class YalParser {
 
@@ -125,10 +126,22 @@ public void parse(String filePath) throws IOException{
                 }
             }
             first = false;
-            //We read the regex part of the rule until we encounter a '{' character, which indicates the start of the action block for that rule. If we reach the end of the content without finding a '{', we throw an exception indicating that the rule is invalid.
+            // Read the regex until we find a '{' that starts the action block.
+            // Skip braces inside single quotes (e.g. '{' is a literal char, not an action start)
             int ruleregexStart=idx;
-            while(idx < content.length() && content.charAt(idx) != '{'){
-                idx++;
+            while(idx < content.length()){
+                if(content.charAt(idx) == '\'' ){
+                    // Skip the quoted character (e.g. '{' or '\n')
+                    idx++;
+                    while(idx < content.length() && content.charAt(idx) != '\''){
+                        idx++;
+                    }
+                    idx++; // Skip closing quote
+                } else if(content.charAt(idx) == '{'){
+                    break; // Found the action block start
+                } else {
+                    idx++;
+                }
             }
             //If we reach the end of the content without finding a '{', we throw an exception indicating that the rule is invalid.
             String ruleRegex= content.substring(ruleregexStart, idx).trim();
@@ -173,7 +186,7 @@ private void expandDefinitions(){
 
         for (int j = 0 ; j < i; j++){
             String prev = keys.get(j);
-            current = current.replaceAll("\\b" + prev + "\\b", "(" + definitions.get(prev) + ")");
+            current = current.replaceAll("\\b" + prev + "\\b", Matcher.quoteReplacement("(" + definitions.get(prev) + ")"));
         }
         definitions.put(keys.get(i) , current); 
     }
@@ -193,7 +206,7 @@ private void expandDefinitions(){
         List<String> sorted = new ArrayList<>(definitions.keySet());
         sorted.sort((a,b) -> b.length() - a.length());  
         for(String name : sorted){
-            regex = regex.replaceAll("\\b" + name + "\\b", "(" + definitions.get(name) + ")");
+            regex = regex.replaceAll("\\b" + name + "\\b", Matcher.quoteReplacement("(" + definitions.get(name) + ")"));
         }
         rule[0] = regex;
         

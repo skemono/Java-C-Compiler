@@ -1,0 +1,6 @@
+(* Test 6: Sin definiciones let, solo reglas directas *)
+
+rule tokens =
+    ['0'-'9']+          { return NUMBER }
+  | ['a'-'z''A'-'Z']+   { return WORD }
+  | '+'                  { return PLUS }

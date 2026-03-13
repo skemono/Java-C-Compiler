@@ -1,0 +1,10 @@
+(* Este es un comentario *)
+let digit = ['0'-'9']
+(* Otro comentario
+   que ocupa varias lineas *)
+let letter = ['a'-'z']
+
+rule tokens =
+    digit+ { return NUM }
+  | letter+ { return WORD }
+(* comentario al final *)
