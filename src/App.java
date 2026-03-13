@@ -1,6 +1,7 @@
 import lexerGen.YalParser;
 import lexerGen.NFA;
 import lexerGen.DFA;
+import lexerGen.Minimizer;
 import lexerGen.util.State;
 
 import java.util.*;
@@ -97,6 +98,28 @@ public class App {
                 } else {
                     expectedTokens.removeAll(coveredTokens);
                     System.out.println("  [WARN] Missing tokens: " + expectedTokens);
+                }
+                System.out.println();
+
+                // --- Module 4: Minimizer ---
+                Minimizer minimizer = new Minimizer();
+                minimizer.minimize(dfa);
+
+                System.out.println("Minimizer: " + minimizer.getStateCount() + " states (vs " + dfa.getStateCount() + " DFA states)");
+                System.out.println("  Start state: " + minimizer.getStartId());
+                System.out.println("  Accepting states:");
+                for (Map.Entry<Integer, String> entry : minimizer.getAccepting().entrySet()) {
+                    System.out.println("    State " + entry.getKey() + " -> " + entry.getValue());
+                }
+
+                Set<String> minCovered = new HashSet<>(minimizer.getAccepting().values());
+                Set<String> minExpected = new HashSet<>();
+                for (String[] rule : rules) minExpected.add(rule[1]);
+                if (minCovered.equals(minExpected)) {
+                    System.out.println("  [OK] All tokens covered");
+                } else {
+                    minExpected.removeAll(minCovered);
+                    System.out.println("  [WARN] Missing tokens: " + minExpected);
                 }
 
             } catch (Exception e) {
