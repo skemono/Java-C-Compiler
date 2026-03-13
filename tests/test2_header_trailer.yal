@@ -1,0 +1,15 @@
+{
+import java.util.ArrayList;
+import java.util.List;
+}
+
+let digit = ['0'-'9']
+
+rule tokens =
+    digit+ { return NUMBER }
+
+{
+public static void main(String[] args) {
+    System.out.println("trailer code");
+}
+}

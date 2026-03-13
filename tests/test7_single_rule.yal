@@ -1,0 +1,6 @@
+(* Test 7: Una sola regla sin | *)
+
+let digit = ['0'-'9']
+
+rule tokens =
+    digit+ { return NUMBER }
