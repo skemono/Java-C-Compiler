@@ -1,0 +1,25 @@
+(* Test 4: Reglas tipo C completas *)
+
+let digit = ['0'-'9']
+let letter = ['a'-'z''A'-'Z']
+let id = letter(letter|digit|'_')*
+let number = digit+
+let whitespace = [' ''\t''\n']
+
+rule tokens =
+    whitespace+    { return WHITESPACE }
+  | id             { return ID }
+  | number         { return NUMBER }
+  | '+'            { return PLUS }
+  | '-'            { return MINUS }
+  | '*'            { return TIMES }
+  | '/'            { return DIV }
+  | '='            { return ASSIGN }
+  | '('            { return LPAREN }
+  | ')'            { return RPAREN }
+  | '['            { return LBRACKET }
+  | ']'            { return RBRACKET }
+  | '{'            { return LBRACE }
+  | '}'            { return RBRACE }
+  | ';'            { return SEMICOLON }
+  | ','            { return COMMA }

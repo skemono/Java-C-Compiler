@@ -1,0 +1,9 @@
+(* Test 5: Expansion en cadena - una definicion referencia a otra que referencia a otra *)
+
+let digit = ['0'-'9']
+let posint = digit+
+let signedint = ('+'|'-')?posint
+let number = signedint('.'posint)?
+
+rule tokens =
+    number { return NUMBER }
