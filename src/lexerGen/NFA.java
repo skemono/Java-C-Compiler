@@ -228,6 +228,8 @@ public class NFA {
                         for (char ch = startChar; ch <= to; ch++) {
                             charSet.add(ch);
                         }
+                    } else {
+                        charSet.add(startChar);
                     }
                 }
                 i++; // Consume the closing bracket ]
