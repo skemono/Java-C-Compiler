@@ -2,21 +2,19 @@ import lexerGen.YalParser;
 import lexerGen.NFA;
 import lexerGen.DFA;
 import lexerGen.Minimizer;
+import lexerGen.CodeGen;
 import lexerGen.util.State;
 
 import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        String[] tests = {
-            "tests/test1_basic.yal",
-            "tests/test2_header_trailer.yal",
-            "tests/test3_comments.yal",
-            "tests/test4_c_lexer.yal",
-            "tests/test5_chain_expansion.yal",
-            "tests/test6_no_definitions.yal",
-            "tests/test7_single_rule.yal"
-        };
+        // Let's focus on a single, comprehensive test case to generate our lexer.
+        String[] tests = { "tests/test4_c_lexer.yal" };
 
         for (String testFile : tests) {
             System.out.println("========================================");
@@ -121,6 +119,18 @@ public class App {
                     minExpected.removeAll(minCovered);
                     System.out.println("  [WARN] Missing tokens: " + minExpected);
                 }
+
+                ////CODEGENNPRUEBA/////
+                System.out.println("  --- Module 5: CodeGen ---");
+                String generatedCode = CodeGen.generate(minimizer, parser);
+                Path generatedDir = Paths.get("generated");
+                if (!Files.exists(generatedDir)) {
+                    Files.createDirectories(generatedDir);
+                }
+                Path outputPath = generatedDir.resolve("Yylex.java");
+                Files.write(outputPath, generatedCode.getBytes(StandardCharsets.UTF_8));
+                System.out.println("  [OK] Successfully generated " + outputPath.toAbsolutePath());
+                ////CODEGENNPRUEBA/////
 
             } catch (Exception e) {
                 System.out.println("ERROR: " + e.getMessage());
