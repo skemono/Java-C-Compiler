@@ -1,0 +1,672 @@
+digraph ExpressionTrees {
+    graph [rankdir=TB, fontname="Helvetica"];
+    node  [shape=circle, fontname="Helvetica", style=filled, fillcolor=lightblue];
+    edge  [fontname="Helvetica"];
+
+    subgraph cluster_0 {
+        label="";
+        style=rounded;
+        color=gray;
+        n1 [label="+", shape=circle, fillcolor=lightblue];
+        n0 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n1 -> n0;
+    }
+
+    subgraph cluster_1 {
+        label="return INT";
+        style=rounded;
+        color=gray;
+        n6 [label="·", shape=circle, fillcolor=lightblue];
+        n4 [label="·", shape=circle, fillcolor=lightblue];
+        n2 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n3 [label="'n'", shape=rectangle, fillcolor=lightyellow];
+        n5 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n6 -> n4;
+        n4 -> n2;
+        n4 -> n3;
+        n6 -> n5;
+    }
+
+    subgraph cluster_2 {
+        label="return FLOAT";
+        style=rounded;
+        color=gray;
+        n15 [label="·", shape=circle, fillcolor=lightblue];
+        n13 [label="·", shape=circle, fillcolor=lightblue];
+        n11 [label="·", shape=circle, fillcolor=lightblue];
+        n9 [label="·", shape=circle, fillcolor=lightblue];
+        n7 [label="'f'", shape=rectangle, fillcolor=lightyellow];
+        n8 [label="'l'", shape=rectangle, fillcolor=lightyellow];
+        n10 [label="'o'", shape=rectangle, fillcolor=lightyellow];
+        n12 [label="'a'", shape=rectangle, fillcolor=lightyellow];
+        n14 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n15 -> n13;
+        n13 -> n11;
+        n11 -> n9;
+        n9 -> n7;
+        n9 -> n8;
+        n11 -> n10;
+        n13 -> n12;
+        n15 -> n14;
+    }
+
+    subgraph cluster_3 {
+        label="return CHAR_TYPE";
+        style=rounded;
+        color=gray;
+        n22 [label="·", shape=circle, fillcolor=lightblue];
+        n20 [label="·", shape=circle, fillcolor=lightblue];
+        n18 [label="·", shape=circle, fillcolor=lightblue];
+        n16 [label="'c'", shape=rectangle, fillcolor=lightyellow];
+        n17 [label="'h'", shape=rectangle, fillcolor=lightyellow];
+        n19 [label="'a'", shape=rectangle, fillcolor=lightyellow];
+        n21 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n22 -> n20;
+        n20 -> n18;
+        n18 -> n16;
+        n18 -> n17;
+        n20 -> n19;
+        n22 -> n21;
+    }
+
+    subgraph cluster_4 {
+        label="return VOID";
+        style=rounded;
+        color=gray;
+        n29 [label="·", shape=circle, fillcolor=lightblue];
+        n27 [label="·", shape=circle, fillcolor=lightblue];
+        n25 [label="·", shape=circle, fillcolor=lightblue];
+        n23 [label="'v'", shape=rectangle, fillcolor=lightyellow];
+        n24 [label="'o'", shape=rectangle, fillcolor=lightyellow];
+        n26 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n28 [label="'d'", shape=rectangle, fillcolor=lightyellow];
+        n29 -> n27;
+        n27 -> n25;
+        n25 -> n23;
+        n25 -> n24;
+        n27 -> n26;
+        n29 -> n28;
+    }
+
+    subgraph cluster_5 {
+        label="return IF";
+        style=rounded;
+        color=gray;
+        n32 [label="·", shape=circle, fillcolor=lightblue];
+        n30 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n31 [label="'f'", shape=rectangle, fillcolor=lightyellow];
+        n32 -> n30;
+        n32 -> n31;
+    }
+
+    subgraph cluster_6 {
+        label="return ELSE";
+        style=rounded;
+        color=gray;
+        n39 [label="·", shape=circle, fillcolor=lightblue];
+        n37 [label="·", shape=circle, fillcolor=lightblue];
+        n35 [label="·", shape=circle, fillcolor=lightblue];
+        n33 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n34 [label="'l'", shape=rectangle, fillcolor=lightyellow];
+        n36 [label="'s'", shape=rectangle, fillcolor=lightyellow];
+        n38 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n39 -> n37;
+        n37 -> n35;
+        n35 -> n33;
+        n35 -> n34;
+        n37 -> n36;
+        n39 -> n38;
+    }
+
+    subgraph cluster_7 {
+        label="return WHILE";
+        style=rounded;
+        color=gray;
+        n48 [label="·", shape=circle, fillcolor=lightblue];
+        n46 [label="·", shape=circle, fillcolor=lightblue];
+        n44 [label="·", shape=circle, fillcolor=lightblue];
+        n42 [label="·", shape=circle, fillcolor=lightblue];
+        n40 [label="'w'", shape=rectangle, fillcolor=lightyellow];
+        n41 [label="'h'", shape=rectangle, fillcolor=lightyellow];
+        n43 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n45 [label="'l'", shape=rectangle, fillcolor=lightyellow];
+        n47 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n48 -> n46;
+        n46 -> n44;
+        n44 -> n42;
+        n42 -> n40;
+        n42 -> n41;
+        n44 -> n43;
+        n46 -> n45;
+        n48 -> n47;
+    }
+
+    subgraph cluster_8 {
+        label="return FOR";
+        style=rounded;
+        color=gray;
+        n53 [label="·", shape=circle, fillcolor=lightblue];
+        n51 [label="·", shape=circle, fillcolor=lightblue];
+        n49 [label="'f'", shape=rectangle, fillcolor=lightyellow];
+        n50 [label="'o'", shape=rectangle, fillcolor=lightyellow];
+        n52 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n53 -> n51;
+        n51 -> n49;
+        n51 -> n50;
+        n53 -> n52;
+    }
+
+    subgraph cluster_9 {
+        label="return RETURN";
+        style=rounded;
+        color=gray;
+        n64 [label="·", shape=circle, fillcolor=lightblue];
+        n62 [label="·", shape=circle, fillcolor=lightblue];
+        n60 [label="·", shape=circle, fillcolor=lightblue];
+        n58 [label="·", shape=circle, fillcolor=lightblue];
+        n56 [label="·", shape=circle, fillcolor=lightblue];
+        n54 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n55 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n57 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n59 [label="'u'", shape=rectangle, fillcolor=lightyellow];
+        n61 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n63 [label="'n'", shape=rectangle, fillcolor=lightyellow];
+        n64 -> n62;
+        n62 -> n60;
+        n60 -> n58;
+        n58 -> n56;
+        n56 -> n54;
+        n56 -> n55;
+        n58 -> n57;
+        n60 -> n59;
+        n62 -> n61;
+        n64 -> n63;
+    }
+
+    subgraph cluster_10 {
+        label="return STRUCT";
+        style=rounded;
+        color=gray;
+        n75 [label="·", shape=circle, fillcolor=lightblue];
+        n73 [label="·", shape=circle, fillcolor=lightblue];
+        n71 [label="·", shape=circle, fillcolor=lightblue];
+        n69 [label="·", shape=circle, fillcolor=lightblue];
+        n67 [label="·", shape=circle, fillcolor=lightblue];
+        n65 [label="'s'", shape=rectangle, fillcolor=lightyellow];
+        n66 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n68 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n70 [label="'u'", shape=rectangle, fillcolor=lightyellow];
+        n72 [label="'c'", shape=rectangle, fillcolor=lightyellow];
+        n74 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n75 -> n73;
+        n73 -> n71;
+        n71 -> n69;
+        n69 -> n67;
+        n67 -> n65;
+        n67 -> n66;
+        n69 -> n68;
+        n71 -> n70;
+        n73 -> n72;
+        n75 -> n74;
+    }
+
+    subgraph cluster_11 {
+        label="return TYPEDEF";
+        style=rounded;
+        color=gray;
+        n88 [label="·", shape=circle, fillcolor=lightblue];
+        n86 [label="·", shape=circle, fillcolor=lightblue];
+        n84 [label="·", shape=circle, fillcolor=lightblue];
+        n82 [label="·", shape=circle, fillcolor=lightblue];
+        n80 [label="·", shape=circle, fillcolor=lightblue];
+        n78 [label="·", shape=circle, fillcolor=lightblue];
+        n76 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n77 [label="'y'", shape=rectangle, fillcolor=lightyellow];
+        n79 [label="'p'", shape=rectangle, fillcolor=lightyellow];
+        n81 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n83 [label="'d'", shape=rectangle, fillcolor=lightyellow];
+        n85 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n87 [label="'f'", shape=rectangle, fillcolor=lightyellow];
+        n88 -> n86;
+        n86 -> n84;
+        n84 -> n82;
+        n82 -> n80;
+        n80 -> n78;
+        n78 -> n76;
+        n78 -> n77;
+        n80 -> n79;
+        n82 -> n81;
+        n84 -> n83;
+        n86 -> n85;
+        n88 -> n87;
+    }
+
+    subgraph cluster_12 {
+        label="return SIZEOF";
+        style=rounded;
+        color=gray;
+        n99 [label="·", shape=circle, fillcolor=lightblue];
+        n97 [label="·", shape=circle, fillcolor=lightblue];
+        n95 [label="·", shape=circle, fillcolor=lightblue];
+        n93 [label="·", shape=circle, fillcolor=lightblue];
+        n91 [label="·", shape=circle, fillcolor=lightblue];
+        n89 [label="'s'", shape=rectangle, fillcolor=lightyellow];
+        n90 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n92 [label="'z'", shape=rectangle, fillcolor=lightyellow];
+        n94 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n96 [label="'o'", shape=rectangle, fillcolor=lightyellow];
+        n98 [label="'f'", shape=rectangle, fillcolor=lightyellow];
+        n99 -> n97;
+        n97 -> n95;
+        n95 -> n93;
+        n93 -> n91;
+        n91 -> n89;
+        n91 -> n90;
+        n93 -> n92;
+        n95 -> n94;
+        n97 -> n96;
+        n99 -> n98;
+    }
+
+    subgraph cluster_13 {
+        label="return BREAK";
+        style=rounded;
+        color=gray;
+        n108 [label="·", shape=circle, fillcolor=lightblue];
+        n106 [label="·", shape=circle, fillcolor=lightblue];
+        n104 [label="·", shape=circle, fillcolor=lightblue];
+        n102 [label="·", shape=circle, fillcolor=lightblue];
+        n100 [label="'b'", shape=rectangle, fillcolor=lightyellow];
+        n101 [label="'r'", shape=rectangle, fillcolor=lightyellow];
+        n103 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n105 [label="'a'", shape=rectangle, fillcolor=lightyellow];
+        n107 [label="'k'", shape=rectangle, fillcolor=lightyellow];
+        n108 -> n106;
+        n106 -> n104;
+        n104 -> n102;
+        n102 -> n100;
+        n102 -> n101;
+        n104 -> n103;
+        n106 -> n105;
+        n108 -> n107;
+    }
+
+    subgraph cluster_14 {
+        label="return CONTINUE";
+        style=rounded;
+        color=gray;
+        n123 [label="·", shape=circle, fillcolor=lightblue];
+        n121 [label="·", shape=circle, fillcolor=lightblue];
+        n119 [label="·", shape=circle, fillcolor=lightblue];
+        n117 [label="·", shape=circle, fillcolor=lightblue];
+        n115 [label="·", shape=circle, fillcolor=lightblue];
+        n113 [label="·", shape=circle, fillcolor=lightblue];
+        n111 [label="·", shape=circle, fillcolor=lightblue];
+        n109 [label="'c'", shape=rectangle, fillcolor=lightyellow];
+        n110 [label="'o'", shape=rectangle, fillcolor=lightyellow];
+        n112 [label="'n'", shape=rectangle, fillcolor=lightyellow];
+        n114 [label="'t'", shape=rectangle, fillcolor=lightyellow];
+        n116 [label="'i'", shape=rectangle, fillcolor=lightyellow];
+        n118 [label="'n'", shape=rectangle, fillcolor=lightyellow];
+        n120 [label="'u'", shape=rectangle, fillcolor=lightyellow];
+        n122 [label="'e'", shape=rectangle, fillcolor=lightyellow];
+        n123 -> n121;
+        n121 -> n119;
+        n119 -> n117;
+        n117 -> n115;
+        n115 -> n113;
+        n113 -> n111;
+        n111 -> n109;
+        n111 -> n110;
+        n113 -> n112;
+        n115 -> n114;
+        n117 -> n116;
+        n119 -> n118;
+        n121 -> n120;
+        n123 -> n122;
+    }
+
+    subgraph cluster_15 {
+        label="return ID";
+        style=rounded;
+        color=gray;
+        n137 [label="·", shape=circle, fillcolor=lightblue];
+        n128 [label="|", shape=circle, fillcolor=lightblue];
+        n126 [label="|", shape=circle, fillcolor=lightblue];
+        n124 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n125 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n127 [label="'_'", shape=rectangle, fillcolor=lightyellow];
+        n136 [label="*", shape=circle, fillcolor=lightblue];
+        n135 [label="|", shape=circle, fillcolor=lightblue];
+        n133 [label="|", shape=circle, fillcolor=lightblue];
+        n131 [label="|", shape=circle, fillcolor=lightblue];
+        n129 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n130 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n132 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n134 [label="'_'", shape=rectangle, fillcolor=lightyellow];
+        n137 -> n128;
+        n128 -> n126;
+        n126 -> n124;
+        n126 -> n125;
+        n128 -> n127;
+        n137 -> n136;
+        n136 -> n135;
+        n135 -> n133;
+        n133 -> n131;
+        n131 -> n129;
+        n131 -> n130;
+        n133 -> n132;
+        n135 -> n134;
+    }
+
+    subgraph cluster_16 {
+        label="return HEX_LIT";
+        style=rounded;
+        color=gray;
+        n145 [label="·", shape=circle, fillcolor=lightblue];
+        n142 [label="·", shape=circle, fillcolor=lightblue];
+        n138 [label="'0'", shape=rectangle, fillcolor=lightyellow];
+        n141 [label="|", shape=circle, fillcolor=lightblue];
+        n139 [label="'x'", shape=rectangle, fillcolor=lightyellow];
+        n140 [label="'X'", shape=rectangle, fillcolor=lightyellow];
+        n144 [label="+", shape=circle, fillcolor=lightblue];
+        n143 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n145 -> n142;
+        n142 -> n138;
+        n142 -> n141;
+        n141 -> n139;
+        n141 -> n140;
+        n145 -> n144;
+        n144 -> n143;
+    }
+
+    subgraph cluster_17 {
+        label="return FLOAT_LIT";
+        style=rounded;
+        color=gray;
+        n152 [label="·", shape=circle, fillcolor=lightblue];
+        n149 [label="·", shape=circle, fillcolor=lightblue];
+        n147 [label="+", shape=circle, fillcolor=lightblue];
+        n146 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n148 [label="'.'", shape=rectangle, fillcolor=lightyellow];
+        n151 [label="+", shape=circle, fillcolor=lightblue];
+        n150 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n152 -> n149;
+        n149 -> n147;
+        n147 -> n146;
+        n149 -> n148;
+        n152 -> n151;
+        n151 -> n150;
+    }
+
+    subgraph cluster_18 {
+        label="return INT_LIT";
+        style=rounded;
+        color=gray;
+        n154 [label="+", shape=circle, fillcolor=lightblue];
+        n153 [label="[set]", shape=rectangle, fillcolor=lightyellow];
+        n154 -> n153;
+    }
+
+    subgraph cluster_19 {
+        label="return EQ";
+        style=rounded;
+        color=gray;
+        n157 [label="·", shape=circle, fillcolor=lightblue];
+        n155 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n156 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n157 -> n155;
+        n157 -> n156;
+    }
+
+    subgraph cluster_20 {
+        label="return NEQ";
+        style=rounded;
+        color=gray;
+        n160 [label="·", shape=circle, fillcolor=lightblue];
+        n158 [label="'!'", shape=rectangle, fillcolor=lightyellow];
+        n159 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n160 -> n158;
+        n160 -> n159;
+    }
+
+    subgraph cluster_21 {
+        label="return LEQ";
+        style=rounded;
+        color=gray;
+        n163 [label="·", shape=circle, fillcolor=lightblue];
+        n161 [label="'\<'", shape=rectangle, fillcolor=lightyellow];
+        n162 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n163 -> n161;
+        n163 -> n162;
+    }
+
+    subgraph cluster_22 {
+        label="return GEQ";
+        style=rounded;
+        color=gray;
+        n166 [label="·", shape=circle, fillcolor=lightblue];
+        n164 [label="'\>'", shape=rectangle, fillcolor=lightyellow];
+        n165 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n166 -> n164;
+        n166 -> n165;
+    }
+
+    subgraph cluster_23 {
+        label="return AND";
+        style=rounded;
+        color=gray;
+        n169 [label="·", shape=circle, fillcolor=lightblue];
+        n167 [label="'&'", shape=rectangle, fillcolor=lightyellow];
+        n168 [label="'&'", shape=rectangle, fillcolor=lightyellow];
+        n169 -> n167;
+        n169 -> n168;
+    }
+
+    subgraph cluster_24 {
+        label="return OR";
+        style=rounded;
+        color=gray;
+        n172 [label="·", shape=circle, fillcolor=lightblue];
+        n170 [label="'|'", shape=rectangle, fillcolor=lightyellow];
+        n171 [label="'|'", shape=rectangle, fillcolor=lightyellow];
+        n172 -> n170;
+        n172 -> n171;
+    }
+
+    subgraph cluster_25 {
+        label="return INC";
+        style=rounded;
+        color=gray;
+        n175 [label="·", shape=circle, fillcolor=lightblue];
+        n173 [label="'+'", shape=rectangle, fillcolor=lightyellow];
+        n174 [label="'+'", shape=rectangle, fillcolor=lightyellow];
+        n175 -> n173;
+        n175 -> n174;
+    }
+
+    subgraph cluster_26 {
+        label="return DEC";
+        style=rounded;
+        color=gray;
+        n178 [label="·", shape=circle, fillcolor=lightblue];
+        n176 [label="'-'", shape=rectangle, fillcolor=lightyellow];
+        n177 [label="'-'", shape=rectangle, fillcolor=lightyellow];
+        n178 -> n176;
+        n178 -> n177;
+    }
+
+    subgraph cluster_27 {
+        label="return PLUS_ASSIGN";
+        style=rounded;
+        color=gray;
+        n181 [label="·", shape=circle, fillcolor=lightblue];
+        n179 [label="'+'", shape=rectangle, fillcolor=lightyellow];
+        n180 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n181 -> n179;
+        n181 -> n180;
+    }
+
+    subgraph cluster_28 {
+        label="return MINUS_ASSIGN";
+        style=rounded;
+        color=gray;
+        n184 [label="·", shape=circle, fillcolor=lightblue];
+        n182 [label="'-'", shape=rectangle, fillcolor=lightyellow];
+        n183 [label="'='", shape=rectangle, fillcolor=lightyellow];
+        n184 -> n182;
+        n184 -> n183;
+    }
+
+    subgraph cluster_29 {
+        label="return ARROW";
+        style=rounded;
+        color=gray;
+        n187 [label="·", shape=circle, fillcolor=lightblue];
+        n185 [label="'-'", shape=rectangle, fillcolor=lightyellow];
+        n186 [label="'\>'", shape=rectangle, fillcolor=lightyellow];
+        n187 -> n185;
+        n187 -> n186;
+    }
+
+    subgraph cluster_30 {
+        label="return PLUS";
+        style=rounded;
+        color=gray;
+        n188 [label="'+'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_31 {
+        label="return MINUS";
+        style=rounded;
+        color=gray;
+        n189 [label="'-'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_32 {
+        label="return STAR";
+        style=rounded;
+        color=gray;
+        n190 [label="'*'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_33 {
+        label="return DIV";
+        style=rounded;
+        color=gray;
+        n191 [label="'/'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_34 {
+        label="return MOD";
+        style=rounded;
+        color=gray;
+        n192 [label="'%'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_35 {
+        label="return LT";
+        style=rounded;
+        color=gray;
+        n193 [label="'\<'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_36 {
+        label="return GT";
+        style=rounded;
+        color=gray;
+        n194 [label="'\>'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_37 {
+        label="return ASSIGN";
+        style=rounded;
+        color=gray;
+        n195 [label="'='", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_38 {
+        label="return NOT";
+        style=rounded;
+        color=gray;
+        n196 [label="'!'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_39 {
+        label="return AMP";
+        style=rounded;
+        color=gray;
+        n197 [label="'&'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_40 {
+        label="return PIPE";
+        style=rounded;
+        color=gray;
+        n198 [label="'|'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_41 {
+        label="return LPAREN";
+        style=rounded;
+        color=gray;
+        n199 [label="'('", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_42 {
+        label="return RPAREN";
+        style=rounded;
+        color=gray;
+        n200 [label="')'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_43 {
+        label="return LBRACE";
+        style=rounded;
+        color=gray;
+        n201 [label="'\{'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_44 {
+        label="return RBRACE";
+        style=rounded;
+        color=gray;
+        n202 [label="'\}'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_45 {
+        label="return LBRACK";
+        style=rounded;
+        color=gray;
+        n203 [label="'['", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_46 {
+        label="return RBRACK";
+        style=rounded;
+        color=gray;
+        n204 [label="']'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_47 {
+        label="return SEMI";
+        style=rounded;
+        color=gray;
+        n205 [label="';'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_48 {
+        label="return COMMA";
+        style=rounded;
+        color=gray;
+        n206 [label="','", shape=rectangle, fillcolor=lightyellow];
+    }
+
+    subgraph cluster_49 {
+        label="return DOT";
+        style=rounded;
+        color=gray;
+        n207 [label="'.'", shape=rectangle, fillcolor=lightyellow];
+    }
+
+}
