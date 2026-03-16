@@ -28,6 +28,7 @@ public class NFA {
                 case STAR:     stack.push(buildStar(stack));           break;
                 case PLUS:     stack.push(buildPlus(stack));           break;
                 case QUESTION: stack.push(buildQuestion(stack));       break;
+                case DIFF:     stack.push(buildDiff(stack));           break;
                 default:
                     throw new RuntimeException("Unexpected token in postfix: " + token);
             }
@@ -134,6 +135,219 @@ public class NFA {
         NFAPart f = stack.pop();
         f.start.addEpsilonTransition(f.accept);
         return new NFAPart(f.start, f.accept);
+    }
+
+    // LocalDFA is a simplified DFA representation used for product construction in the difference operation.
+    private static class LocalDFA {
+        int startId = 0;
+        int stateCount = 0;
+        Map<Integer, Map<Character, Integer>> transitions = new HashMap<>();
+        Set<Integer> acceptStates = new HashSet<>();
+    }
+
+    // Builds an NFA for the difference of two languages by converting to local DFAs and applying product construction.
+    private NFAPart buildDiff(Stack<NFAPart> stack) {
+        NFAPart f2 = stack.pop(); // language to subtract
+        NFAPart f1 = stack.pop(); // base language
+
+        LocalDFA dfa1 = toLocalDFA(f1);
+        LocalDFA dfa2 = toLocalDFA(f2);
+
+        return productDiff(dfa1, dfa2);
+    }
+
+    /** Converts an NFAPart to a local DFA via subset construction. */
+    private LocalDFA toLocalDFA(NFAPart fragment) {
+        LocalDFA result = new LocalDFA();
+        Map<Set<State>, Integer> stateIds = new LinkedHashMap<>();
+        Queue<Set<State>> worklist = new LinkedList<>();
+
+        Set<State> startSet = localEpsilonClosure(Collections.singleton(fragment.start));
+        stateIds.put(startSet, 0);
+        result.startId = 0;
+        result.stateCount = 1;
+        worklist.add(startSet);
+
+        if (startSet.contains(fragment.accept)) result.acceptStates.add(0);
+
+        while (!worklist.isEmpty()) {
+            Set<State> current = worklist.poll();
+            int currentId = stateIds.get(current);
+
+            for (char c : ALPHABET) {
+                Set<State> moved = localMove(current, c);
+                if (moved.isEmpty()) continue;
+                Set<State> next = localEpsilonClosure(moved);
+                if (next.isEmpty()) continue;
+
+                if (!stateIds.containsKey(next)) {
+                    int newId = result.stateCount++;
+                    stateIds.put(next, newId);
+                    worklist.add(next);
+                    if (next.contains(fragment.accept)) result.acceptStates.add(newId);
+                }
+                result.transitions.computeIfAbsent(currentId, k -> new HashMap<>())
+                                  .put(c, stateIds.get(next));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Product construction: L1 - L2.
+     * Accept pairs (s1, s2) where s1 ∈ accept(DFA1) AND s2 ∉ accept(DFA2).
+     * s2 = -1 represents a dead state in DFA2 (non-accepting by definition).
+     */
+    private NFAPart productDiff(LocalDFA dfa1, LocalDFA dfa2) {
+        Map<String, Integer> productIds = new LinkedHashMap<>();
+        Map<Integer, Map<Character, Integer>> productTrans = new HashMap<>();
+        Set<Integer> productAccept = new HashSet<>();
+        Queue<String> worklist = new LinkedList<>();
+
+        String startKey = dfa1.startId + "," + dfa2.startId;
+        productIds.put(startKey, 0);
+        worklist.add(startKey);
+
+        if (dfa1.acceptStates.contains(dfa1.startId)
+                && !dfa2.acceptStates.contains(dfa2.startId)) {
+            productAccept.add(0);
+        }
+
+        while (!worklist.isEmpty()) {
+            String key = worklist.poll();
+            int pid = productIds.get(key);
+            String[] parts = key.split(",");
+            int s1 = Integer.parseInt(parts[0]);
+            int s2 = Integer.parseInt(parts[1]); // -1 = dead
+
+            for (char c : ALPHABET) {
+                Map<Character, Integer> t1 = dfa1.transitions.get(s1);
+                int next1 = (t1 != null && t1.containsKey(c)) ? t1.get(c) : -1;
+                if (next1 == -1) continue; // DFA1 has no transition → skip
+
+                Map<Character, Integer> t2 = (s2 >= 0) ? dfa2.transitions.get(s2) : null;
+                int next2 = (t2 != null && t2.containsKey(c)) ? t2.get(c) : -1;
+
+                String nextKey = next1 + "," + next2;
+                if (!productIds.containsKey(nextKey)) {
+                    int newId = productIds.size();
+                    productIds.put(nextKey, newId);
+                    worklist.add(nextKey);
+                    if (dfa1.acceptStates.contains(next1)
+                            && !dfa2.acceptStates.contains(next2)) {
+                        productAccept.add(newId);
+                    }
+                }
+                productTrans.computeIfAbsent(pid, k -> new HashMap<>())
+                            .put(c, productIds.get(nextKey));
+            }
+        }
+
+        // Convert product DFA states to State objects
+        int n = productIds.size();
+        State[] dfaStates = new State[n];
+        for (int i = 0; i < n; i++) dfaStates[i] = new State();
+
+        for (Map.Entry<Integer, Map<Character, Integer>> e : productTrans.entrySet()) {
+            for (Map.Entry<Character, Integer> t : e.getValue().entrySet()) {
+                dfaStates[e.getKey()].addTransition(t.getKey(), dfaStates[t.getValue()]);
+            }
+        }
+
+        // Merge all product accept states into one sAccept via ε-transitions
+        State sAccept = new State();
+        for (int aid : productAccept) {
+            dfaStates[aid].addEpsilonTransition(sAccept);
+        }
+
+        return new NFAPart(dfaStates[0], sAccept);
+    }
+
+    /** Epsilon closure — local copy to avoid dependency on DFA module. */
+    private Set<State> localEpsilonClosure(Set<State> states) {
+        Set<State> closure = new HashSet<>(states);
+        Queue<State> queue = new LinkedList<>(states);
+        while (!queue.isEmpty()) {
+            for (State next : queue.poll().epsilonTransitions) {
+                if (closure.add(next)) queue.add(next);
+            }
+        }
+        return closure;
+    }
+
+    /** Move function — local copy to avoid dependency on DFA module. */
+    private Set<State> localMove(Set<State> states, char c) {
+        Set<State> result = new HashSet<>();
+        for (State s : states) {
+            Set<State> targets = s.transitions.get(c);
+            if (targets != null) result.addAll(targets);
+        }
+        return result;
+    }
+
+    // ─── REGEX TO POSTFIX & EXPR TREE ────────────────────────────────────────
+    public ExprNode buildExprTree(List<RegexToken> postfix) {
+        Stack<ExprNode> stack = new Stack<>();
+
+        for (RegexToken token : postfix) {
+            switch (token.type) {
+                case CHAR: {
+                    String lbl = "'" + escapeLabel(token.singleChar) + "'";
+                    stack.push(new ExprNode(lbl));
+                    break;
+                }
+                case CLASS: {
+                    String lbl = token.isComplement ? "[^set]" : "[set]";
+                    stack.push(new ExprNode(lbl));
+                    break;
+                }
+                case ANY:
+                    stack.push(new ExprNode("_"));
+                    break;
+                case CONCAT: {
+                    ExprNode right = stack.pop();
+                    ExprNode left  = stack.pop();
+                    stack.push(new ExprNode("·", left, right));
+                    break;
+                }
+                case UNION: {
+                    ExprNode right = stack.pop();
+                    ExprNode left  = stack.pop();
+                    stack.push(new ExprNode("|", left, right));
+                    break;
+                }
+                case DIFF: {
+                    ExprNode right = stack.pop();
+                    ExprNode left  = stack.pop();
+                    stack.push(new ExprNode("#", left, right));
+                    break;
+                }
+                case STAR:
+                    stack.push(new ExprNode("*", stack.pop()));
+                    break;
+                case PLUS:
+                    stack.push(new ExprNode("+", stack.pop()));
+                    break;
+                case QUESTION:
+                    stack.push(new ExprNode("?", stack.pop()));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return stack.isEmpty() ? null : stack.pop();
+    }
+
+    private String escapeLabel(char c) {
+        switch (c) {
+            case '\n': return "\\n";
+            case '\t': return "\\t";
+            case '\r': return "\\r";
+            case '\'': return "\\'";
+            case '\\': return "\\\\";
+            case '"':  return "\\\"";
+            default:   return String.valueOf(c);
+        }
     }
 
     // ─── GLOBAL NFA ───────────────────────────────────────────────────────────
@@ -402,7 +616,7 @@ public class NFA {
 
     // HELPERS FOR SHUNTING YARD
     // Define operator precedence for the shunting yard algorithm. 
-    // Order is defined in 
+    // Order is defined in Consideraciones Yalex document.
     private int precedence(RegexToken.Type type) {
         switch (type) {
             case DIFF:     

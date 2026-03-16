@@ -13,9 +13,23 @@ import java.nio.charset.StandardCharsets;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        // Let's focus on a single, comprehensive test case to generate our lexer.
-        String[] tests = { "tests/test4_c_lexer.yal" };
+        // Parse CLI: App <file.yal> [-o <OutputClassName>]
+        if (args.length == 0) {
+            System.out.println("Usage: java App <file.yal> [-o <OutputClassName>]");
+            System.out.println("  <file.yal>          YALex specification file");
+            System.out.println("  -o <OutputName>     Name for generated lexer class (default: Yylex)");
+            return;
+        }
 
+        String yalFile    = args[0];
+        String outputName = "Yylex";
+        for (int i = 1; i < args.length; i++) {
+            if (args[i].equals("-o") && i + 1 < args.length) {
+                outputName = args[++i];
+            }
+        }
+
+        String[] tests = { yalFile };
         for (String testFile : tests) {
             System.out.println("========================================");
             System.out.println("TEST: " + testFile);
@@ -120,17 +134,21 @@ public class App {
                     System.out.println("  [WARN] Missing tokens: " + minExpected);
                 }
 
-                ////CODEGENNPRUEBA/////
+                // --- Module 5: CodeGen ---
                 System.out.println("  --- Module 5: CodeGen ---");
-                String generatedCode = CodeGen.generate(minimizer, parser);
+
+                // 5a. Generate lexer source
+                String generatedCode = CodeGen.generate(minimizer, parser, outputName);
                 Path generatedDir = Paths.get("generated");
-                if (!Files.exists(generatedDir)) {
-                    Files.createDirectories(generatedDir);
-                }
-                Path outputPath = generatedDir.resolve("Yylex.java");
+                if (!Files.exists(generatedDir)) Files.createDirectories(generatedDir);
+                Path outputPath = generatedDir.resolve(outputName + ".java");
                 Files.write(outputPath, generatedCode.getBytes(StandardCharsets.UTF_8));
-                System.out.println("  [OK] Successfully generated " + outputPath.toAbsolutePath());
-                ////CODEGENNPRUEBA/////
+                System.out.println("  [OK] Lexer source:  " + outputPath.toAbsolutePath());
+
+                // 5b. Generate expression tree (DOT + PNG via Graphviz)
+                System.out.println("  --- Expression Tree ---");
+                CodeGen.generateGraphviz(rules, nfa, "output");
+
 
             } catch (Exception e) {
                 System.out.println("ERROR: " + e.getMessage());

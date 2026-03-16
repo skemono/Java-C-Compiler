@@ -1,0 +1,10 @@
+(* Test 8: operador DIFF # — letras excluyendo las vocales *)
+
+let letter = ['a'-'z']
+let vowel  = ['a''e''i''o''u']
+let consonant = letter # vowel
+
+rule tokens =
+    consonant+ { return CONSONANTS }
+  | vowel+     { return VOWELS }
+  | ' '        { return SPACE }
