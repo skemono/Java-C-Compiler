@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        // Let's focus on a single, comprehensive test case to generate our lexer.
+        
         String[] tests = { "tests/test4_c_lexer.yal" };
 
         for (String testFile : tests) {

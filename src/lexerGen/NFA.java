@@ -142,6 +142,9 @@ public class NFA {
     public State buildGlobalNFA(List<String[]> rules) {
         State startGlobal = new State();
 
+        List<RegexToken> combinedPostfix = new ArrayList<>();
+        boolean firstRule = true;
+
         for (String[] rule : rules) {
             String regex     = rule[0];
             String tokenName = rule[1];
@@ -149,11 +152,24 @@ public class NFA {
             List<RegexToken> tokens   = tokenize(regex);
             List<RegexToken> concated = insertConcat(tokens);
             List<RegexToken> postfix  = toPostfix(concated);
+            
+            // Agregamos al postfix global y unimos con un UNION (|) si no es la primera regla
+            combinedPostfix.addAll(postfix);
+            if (!firstRule) {
+                combinedPostfix.add(new RegexToken(RegexToken.Type.UNION));
+            }
+            firstRule = false;
+            
             NFAPart fragment          = buildNFA(postfix);
 
             startGlobal.addEpsilonTransition(fragment.start);
             fragment.accept.tokenName = tokenName;
         }
+
+        // --- Generación del Árbol de Expresión Global ---
+        Tree astTree = new Tree();
+        astTree.buildFromPostfix(combinedPostfix);
+        astTree.generateDotFile("generated/ast_global.dot");
 
         return startGlobal;
     }
