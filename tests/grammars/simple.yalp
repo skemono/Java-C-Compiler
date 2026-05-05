@@ -1,0 +1,16 @@
+/* Simple grammar: E → E PLUS T | T, T → ID */
+%token ID
+%token PLUS
+%token WS
+IGNORE WS
+
+%%
+
+expr:
+    expr PLUS term
+  | term
+;
+
+term:
+    ID
+;
