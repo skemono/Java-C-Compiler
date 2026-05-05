@@ -1,0 +1,53 @@
+(* Test 10: Deep chain expansion + keywords vs identifiers + mixed tokens *)
+
+let lower     = ['a'-'z']
+let upper     = ['A'-'Z']
+let letter    = lower | upper
+let digit     = ['0'-'9']
+let alnum     = letter | digit | '_'
+let id        = letter alnum*
+let integer   = digit+
+let decimal   = digit+ '.' digit+
+let ws        = [' ''\t''\n''\r']
+let hex_digit = digit | ['a'-'f'] | ['A'-'F']
+let hex       = '0' 'x' hex_digit+
+
+rule tokens =
+    ws+         { }
+  | "if"        { return IF }
+  | "else"      { return ELSE }
+  | "while"     { return WHILE }
+  | "for"       { return FOR }
+  | "return"    { return RETURN }
+  | "int"       { return INT }
+  | "float"     { return FLOAT }
+  | "void"      { return VOID }
+  | id          { return ID }
+  | hex         { return HEX }
+  | decimal     { return DECIMAL }
+  | integer     { return INTEGER }
+  | "=="        { return EQ }
+  | "!="        { return NEQ }
+  | "<="        { return LEQ }
+  | ">="        { return GEQ }
+  | "++"        { return INC }
+  | "--"        { return DEC }
+  | "&&"        { return AND }
+  | "||"        { return OR }
+  | '<'         { return LT }
+  | '>'         { return GT }
+  | '='         { return ASSIGN }
+  | '+'         { return PLUS }
+  | '-'         { return MINUS }
+  | '*'         { return TIMES }
+  | '/'         { return DIV }
+  | '%'         { return MOD }
+  | '('         { return LPAREN }
+  | ')'         { return RPAREN }
+  | '{'         { return LBRACE }
+  | '}'         { return RBRACE }
+  | '['         { return LBRACKET }
+  | ']'         { return RBRACKET }
+  | ';'         { return SEMICOLON }
+  | ','         { return COMMA }
+  | '.'         { return DOT }
