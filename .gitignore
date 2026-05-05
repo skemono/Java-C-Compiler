@@ -1,3 +1,5 @@
 *.class
 CLAUDE.md
 docs
+.claude/
+bin/
